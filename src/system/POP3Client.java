@@ -39,7 +39,9 @@ public class POP3Client {
      */
     public static String readResponseLine() throws IOException {
         String response = reader.readLine();
-        if(response.startsWith("-ERR")) throw new RuntimeException();
+        if(response.startsWith("-ERR")) {
+            throw new RuntimeException();
+        }
         return response;
     }
     
@@ -115,7 +117,9 @@ public class POP3Client {
         Map<String, List<String>> headers = new HashMap<String, List<String>>();
         sendCommand("RETR " + i);
         while((response = readResponseLine()).length() != 0) {
-            if(response.startsWith("\t")) continue;
+            if(response.startsWith("\t")) {
+                continue;
+            }
             int colognPosition = response.indexOf(":");
             headerName = response.substring(0, colognPosition);
             String headerValue;
