@@ -1,12 +1,7 @@
 package gui;
 
-import java.awt.Cursor;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JMenuItem;
-import javax.swing.text.DefaultEditorKit;
 import system.Message;
 import system.POP3Client;
 
@@ -93,27 +88,12 @@ public class jMailGUI extends javax.swing.JFrame {
         jMenu2.setText("Edit");
 
         jMenuItem2.setText("Cut");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
         jMenu2.add(jMenuItem2);
 
         jMenuItem4.setText("Copy");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
         jMenu2.add(jMenuItem4);
 
         jMenuItem5.setText("Paste");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
-            }
-        });
         jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
@@ -186,15 +166,15 @@ public class jMailGUI extends javax.swing.JFrame {
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         try {
-            POP3Client.connect(parseHost(choice1.getSelectedItem()), 110);
-            POP3Client.login(textField1.getText(), jPasswordField1.getSelectedText());
+            POP3Client.connect(parseHost(choice1.getSelectedItem()));
+            POP3Client.login(textField1.getText(), new String(jPasswordField1.getPassword()));
             parseMessages(POP3Client.getMessages());
             POP3Client.logout();
             POP3Client.disconnect();
         } catch (IOException ex) {
-            jTextArea1.setText("Something went wrong...");
+            jTextArea1.setText("Something went wrong... " + ex.getMessage());
         } catch (RuntimeException e) {
-            jTextArea1.setText("Unable to conneect to the server!Try again.");
+            jTextArea1.setText("Unable to conneect to the server!Try again. " + e.getMessage());
             textField1.setText("");
             jPasswordField1.setText("");
         }
@@ -202,25 +182,13 @@ public class jMailGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_button1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        System.exit(1);
+        System.exit(0);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         AboutWindow about = new AboutWindow();
         about.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments

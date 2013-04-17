@@ -24,9 +24,9 @@ public class POP3Client {
      * @param port
      * @throws IOException 
      */
-    public static void connect(String host, int port) throws IOException {
+    public static void connect(String host) throws IOException {
         socket = new Socket();
-        socket.connect(new InetSocketAddress(host, port));
+        socket.connect(new InetSocketAddress(host, 110));
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         readResponseLine();
@@ -40,7 +40,7 @@ public class POP3Client {
     public static String readResponseLine() throws IOException {
         String response = reader.readLine();
         if(response.startsWith("-ERR")) {
-            throw new RuntimeException();
+            throw new RuntimeException("Error in server response." + response);
         }
         return response;
     }
@@ -114,7 +114,7 @@ public class POP3Client {
     public static Message getMessage(int i) throws IOException {
         String response;
         String headerName;
-        Map<String, List<String>> headers = new HashMap<String, List<String>>();
+        Map<String, List<String>> headers = new HashMap<>();
         sendCommand("RETR " + i);
         while((response = readResponseLine()).length() != 0) {
             if(response.startsWith("\t")) {
@@ -130,7 +130,7 @@ public class POP3Client {
             }
             List<String> headerValues = headers.get(headerName);
             if(headerValues == null) {
-                headerValues = new ArrayList<String>();
+                headerValues = new ArrayList<>();
                 headers.put(headerName, headerValues);
             } else {
                 headerValues.add(headerValue);
@@ -150,7 +150,7 @@ public class POP3Client {
      */
     public static List<Message> getMessages() throws IOException {
         int numOfMessages = getNumberOfMessages();
-        ArrayList<Message> messageList = new ArrayList<Message>();
+        ArrayList<Message> messageList = new ArrayList<>();
         for(int i = 0;i < numOfMessages;i++) {
             messageList.add(getMessage(i));
         }
