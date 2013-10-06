@@ -1,0 +1,4 @@
+jMail
+=====
+
+Java mail client
