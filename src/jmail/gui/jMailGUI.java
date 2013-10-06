@@ -1,9 +1,9 @@
-package gui;
+package jmail.gui;
 
 import java.io.IOException;
 import java.util.List;
-import system.Message;
-import system.POP3Client;
+import jmail.domen.Message;
+import jmail.system.POP3Client;
 
 /**
  *
@@ -166,11 +166,11 @@ public class jMailGUI extends javax.swing.JFrame {
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         try {
-            POP3Client.connect(parseHost(choice1.getSelectedItem()));
-            POP3Client.login(textField1.getText(), new String(jPasswordField1.getPassword()));
-            parseMessages(POP3Client.getMessages());
-            POP3Client.logout();
-            POP3Client.disconnect();
+            POP3Client.getInstance().connect(parseHost(choice1.getSelectedItem()));
+            POP3Client.getInstance().login(textField1.getText(), new String(jPasswordField1.getPassword()));
+            parseMessages(POP3Client.getInstance().getMessages());
+            POP3Client.getInstance().logout();
+            POP3Client.getInstance().disconnect();
         } catch (IOException ex) {
             jTextArea1.setText("Something went wrong... " + ex.getMessage());
         } catch (RuntimeException e) {

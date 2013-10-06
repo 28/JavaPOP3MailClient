@@ -1,5 +1,6 @@
-package system;
+package jmail.system;
 
+import jmail.domen.Message;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -18,13 +19,26 @@ public class POP3Client {
     public static BufferedReader reader;
     public static BufferedWriter writer;
     
+    private static POP3Client instance;
+    
+    private POP3Client() {
+        
+    }
+    
+    public static POP3Client getInstance() {
+        if(instance == null) {
+            instance = new POP3Client();
+        }
+        return instance;
+    }
+    
     /**
      * 
      * @param host
      * @param port
      * @throws IOException 
      */
-    public static void connect(String host) throws IOException {
+    public void connect(String host) throws IOException {
         socket = new Socket();
         socket.connect(new InetSocketAddress(host, 110));
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -37,7 +51,7 @@ public class POP3Client {
      * @return String
      * @throws IOException 
      */
-    public static String readResponseLine() throws IOException {
+    public String readResponseLine() throws IOException {
         String response = reader.readLine();
         if(response.startsWith("-ERR")) {
             throw new RuntimeException("Error in server response." + response);
@@ -49,7 +63,7 @@ public class POP3Client {
      * 
      * @return 
      */
-    public static boolean isConnected() {
+    public boolean isConnected() {
         return socket != null && socket.isConnected();
     }
     
@@ -57,7 +71,7 @@ public class POP3Client {
      * 
      * @throws IOException 
      */
-    public static void disconnect() throws IOException {
+    public void disconnect() throws IOException {
         socket.close();
         writer = null;
         reader = null;
@@ -69,7 +83,7 @@ public class POP3Client {
      * @return String
      * @throws IOException 
      */
-    public static String sendCommand(String command) throws IOException {
+    public String sendCommand(String command) throws IOException {
         writer.write(command + '\n');
         writer.flush();
         return readResponseLine();
@@ -81,7 +95,7 @@ public class POP3Client {
      * @param password
      * @throws IOException 
      */
-    public static void login(String username, String password) throws IOException{
+    public void login(String username, String password) throws IOException{
         sendCommand("USER " + username);
         sendCommand("PASS " + password);
     }
@@ -90,7 +104,7 @@ public class POP3Client {
      * 
      * @throws IOException 
      */
-    public static void logout() throws IOException{
+    public void logout() throws IOException{
         sendCommand("QUIT");
     }
     
@@ -99,7 +113,7 @@ public class POP3Client {
      * @return
      * @throws IOException 
      */
-    public static int getNumberOfMessages() throws IOException {
+    public int getNumberOfMessages() throws IOException {
         String response = sendCommand("STAT");
         String [] values = response.split(" ");
         return Integer.parseInt(values[1]);
@@ -111,7 +125,7 @@ public class POP3Client {
      * @return
      * @throws IOException 
      */
-    public static Message getMessage(int i) throws IOException {
+    public Message getMessage(int i) throws IOException {
         String response;
         String headerName;
         Map<String, List<String>> headers = new HashMap<>();
@@ -148,7 +162,7 @@ public class POP3Client {
      * @return
      * @throws IOException 
      */
-    public static List<Message> getMessages() throws IOException {
+    public List<Message> getMessages() throws IOException {
         int numOfMessages = getNumberOfMessages();
         ArrayList<Message> messageList = new ArrayList<>();
         for(int i = 0;i < numOfMessages;i++) {

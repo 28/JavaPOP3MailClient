@@ -1,4 +1,4 @@
-package system;
+package jmail.domen;
 
 import java.util.Collections;
 import java.util.List;
