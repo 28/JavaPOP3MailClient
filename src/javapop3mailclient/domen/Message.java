@@ -1,4 +1,4 @@
-package jmail.domen;
+package javapop3mailclient.domen;
 
 import java.util.Collections;
 import java.util.List;

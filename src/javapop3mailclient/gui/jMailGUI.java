@@ -1,9 +1,9 @@
-package jmail.gui;
+package javapop3mailclient.gui;
 
 import java.io.IOException;
 import java.util.List;
-import jmail.domen.Message;
-import jmail.system.POP3Client;
+import javapop3mailclient.domen.Message;
+import javapop3mailclient.system.POP3Client;
 
 /**
  *

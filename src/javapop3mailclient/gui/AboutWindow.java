@@ -1,4 +1,4 @@
-package jmail.gui;
+package javapop3mailclient.gui;
 
 /**
  *
