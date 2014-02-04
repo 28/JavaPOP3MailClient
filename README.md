@@ -1,6 +1,6 @@
-# jMail
+# JavaPOP3MailClient
 
-jMail is a POP3 mail client with GUI written in Java.
+This is a POP3 mail client with GUI written in Java.
 
 ## Usage
 
