@@ -1,7 +1,11 @@
 package javapop3mailclient.system;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import javapop3mailclient.domen.Message;
-import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -35,7 +39,6 @@ public class POP3Client {
     /**
      * 
      * @param host
-     * @param port
      * @throws IOException 
      */
     public void connect(String host) throws IOException {
