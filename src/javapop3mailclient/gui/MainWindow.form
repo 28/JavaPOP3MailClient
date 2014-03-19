@@ -72,14 +72,15 @@
                       <Component id="exitButton" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="messagesListLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="messageBodyLabel" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="messagesListLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="353" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="messageBodyLabel" min="-2" pref="94" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -97,10 +98,10 @@
               <Component id="messagesListLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="messagesTableScrollPane" min="-2" pref="129" max="-2" attributes="0"/>
-              <EmptySpace pref="7" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="messageBodyLabel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="messageBodyTextAreaScrollPane" min="-2" pref="153" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="messageBodyTextAreaScrollPane" pref="244" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -140,6 +141,9 @@
               </Table>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="messagesTableMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -152,6 +156,7 @@
       <SubComponents>
         <Component class="javax.swing.JTextArea" name="messageBodyTextArea">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
           </Properties>
@@ -167,6 +172,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Refresh"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="exitButton">
       <Properties>

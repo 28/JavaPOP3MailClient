@@ -1,10 +1,10 @@
 package javapop3mailclient.gui;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javapop3mailclient.controller.Controller;
 import javapop3mailclient.controller.HostParseException;
+import javapop3mailclient.systemoperations.CredentialsFormException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -113,16 +113,28 @@ public class WelcomeWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /**
+     *
+     * @param evt
+     */
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
-
+    
+    /**
+     *
+     * @param evt
+     */
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
         AboutWindow aboutWindow = new AboutWindow(this, true);
         aboutWindow.setVisible(true);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
-
+    
+    /**
+     *
+     * @param evt
+     */
     private void getMailButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getMailButtonActionPerformed
         try {
             String email = emailTextField.getText().trim();
@@ -131,10 +143,12 @@ public class WelcomeWindow extends javax.swing.JFrame {
             MainWindow mainWindow = new MainWindow();
             mainWindow.setVisible(true);
             this.dispose();
-        } catch (HostParseException ex) {
-            Logger.getLogger(WelcomeWindow.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(WelcomeWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (HostParseException | IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
+        } catch (CredentialsFormException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
+            emailTextField.setText("");
+            passwordPasswordField.setText("");
         }
     }//GEN-LAST:event_getMailButtonActionPerformed
 

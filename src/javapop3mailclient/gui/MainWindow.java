@@ -1,9 +1,10 @@
 package javapop3mailclient.gui;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javapop3mailclient.controller.Controller;
+import javapop3mailclient.domain.Message;
+import javapop3mailclient.gui.models.MessagesTableModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,7 +19,7 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow() {
         initComponents();
         setTexts();
-        
+        fillMessagesTable();
     }
 
     /**
@@ -65,8 +66,14 @@ public class MainWindow extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        messagesTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                messagesTableMouseClicked(evt);
+            }
+        });
         messagesTableScrollPane.setViewportView(messagesTable);
 
+        messageBodyTextArea.setEditable(false);
         messageBodyTextArea.setColumns(20);
         messageBodyTextArea.setRows(5);
         messageBodyTextAreaScrollPane.setViewportView(messageBodyTextArea);
@@ -74,6 +81,11 @@ public class MainWindow extends javax.swing.JFrame {
         messageBodyLabel.setText("Message body: ");
 
         refreshButton.setText("Refresh");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
 
         exitButton.setText("Exit");
         exitButton.addActionListener(new java.awt.event.ActionListener() {
@@ -121,11 +133,12 @@ public class MainWindow extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(exitButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(messagesListLabel)
-                            .addComponent(messageBodyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(messagesListLabel)
+                        .addGap(0, 353, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(messageBodyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,30 +153,64 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(messagesListLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(messagesTableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(messageBodyLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(messageBodyTextAreaScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(messageBodyTextAreaScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     *
+     * @param evt
+     */
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
+    /**
+     *
+     * @param evt
+     */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         int answer = JOptionPane.showConfirmDialog(this, "Exit?", "JavaPOP3MailClient - Exit", JOptionPane.YES_NO_OPTION);
-        if(answer == JOptionPane.YES_OPTION) {
+        if (answer == JOptionPane.YES_OPTION) {
             try {
                 Controller.getInstance().exit();
             } catch (IOException ex) {
-                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_exitButtonActionPerformed
+
+    /**
+     *
+     * @param evt
+     */
+    private void messagesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_messagesTableMouseClicked
+        if (messagesTable.getSelectedRowCount() == 1) {
+            int row = messagesTable.getSelectedRow();
+            MessagesTableModel mtm = (MessagesTableModel) messagesTable.getModel();
+            Message m = mtm.getMessages().get(row);
+            messageBodyTextArea.setText(m.getBody());
+        }
+    }//GEN-LAST:event_messagesTableMouseClicked
+
+    /**
+     *
+     * @param evt
+     */
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        try {
+            Controller.getInstance().refresh();
+            setTexts();
+            fillMessagesTable();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_refreshButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -212,12 +259,21 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextField numberOfNewMessagesTextField;
     private javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
-    
+
     /**
      *
      */
     private void setTexts() {
         this.setTitle("JavaPOP3MailClient - " + Controller.getInstance().getEmail());
         numberOfNewMessagesTextField.setText(Controller.getInstance().getMessageNumber() + "");
+    }
+
+    /**
+     *
+     */
+    private void fillMessagesTable() {
+        List<Message> messages = Controller.getInstance().getMessages();
+        MessagesTableModel mtm = new MessagesTableModel(messages);
+        messagesTable.setModel(mtm);
     }
 }

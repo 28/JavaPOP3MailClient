@@ -5,7 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import javapop3mailclient.domen.Message;
+import javapop3mailclient.domain.Message;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -59,12 +59,11 @@ public class SystemOperations {
 
     /**
      *
-     * @return 
-     * @throws IOException
+     * @return @throws IOException
      */
     public static List<Message> getMessages() throws IOException {
         int numOfMessages = getNumberOfMessages();
-        ArrayList<Message> messageList = new ArrayList<>();
+        List<Message> messageList = new ArrayList<>();
         for (int i = 1; i <= numOfMessages; i++) {
             messageList.add(getMessage(i));
         }
@@ -87,6 +86,22 @@ public class SystemOperations {
      */
     public static void logout() throws IOException {
         sendCommand("QUIT");
+    }
+
+    /**
+     *
+     * @param email
+     * @param password
+     * @throws javapop3mailclient.systemoperations.CredentialsFormException
+     */
+    public static void credentialsFormOk(String email, String password) throws CredentialsFormException {
+        String emailRegex = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}";
+        if(email == null || password == null || email.equals("") || password.equals("") || email.equals(" ")) {
+            throw new CredentialsFormException("Input can not be empty.");
+        }
+        if(!email.matches(emailRegex)) {
+            throw new CredentialsFormException("E-mail form not valid.");
+        }
     }
 
     /**
@@ -119,7 +134,7 @@ public class SystemOperations {
             int colognPosition = response.indexOf(":");
             headerName = response.substring(0, colognPosition);
             String headerValue;
-            if (headerName.length() < colognPosition) {
+            if (headerName.length() <= colognPosition) {
                 headerValue = response.substring(colognPosition + 2);
             } else {
                 headerValue = "";
@@ -127,6 +142,7 @@ public class SystemOperations {
             List<String> headerValues = headers.get(headerName);
             if (headerValues == null) {
                 headerValues = new ArrayList<>();
+                headerValues.add(headerValue);
                 headers.put(headerName, headerValues);
             } else {
                 headerValues.add(headerValue);
