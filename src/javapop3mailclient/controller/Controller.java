@@ -1,9 +1,14 @@
 package javapop3mailclient.controller;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 import javapop3mailclient.domain.Message;
 import javapop3mailclient.systemoperations.CredentialsFormException;
+import javapop3mailclient.systemoperations.ErrResponseException;
 import javapop3mailclient.systemoperations.SystemOperations;
 
 /**
@@ -19,19 +24,21 @@ public class Controller {
     private List<Message> messages;
     private int messageNumber;
     private String email;
+    private Properties hosts;
 
     /**
-     *
+     * @throws IOException
      */
-    private Controller() {
-
+    private Controller() throws IOException {
+        loadHosts();
     }
 
     /**
      *
      * @return
+     * @throws IOException
      */
-    public static Controller getInstance() {
+    public static Controller getInstance() throws IOException {
         if (instance == null) {
             instance = new Controller();
         }
@@ -46,7 +53,7 @@ public class Controller {
      * @throws IOException
      * @throws javapop3mailclient.systemoperations.CredentialsFormException
      */
-    public void signIn(String email, String password) throws HostParseException, IOException, CredentialsFormException {
+    public void signIn(String email, String password) throws HostParseException, IOException, CredentialsFormException, ErrResponseException {
         SystemOperations.credentialsFormOk(email, password);
         this.email = email;
         this.password = password;
@@ -59,7 +66,11 @@ public class Controller {
         SystemOperations.disconnect();
     }
 
-    public void refresh() throws IOException {
+    /**
+     *
+     * @throws IOException
+     */
+    public void refresh() throws IOException, ErrResponseException {
         SystemOperations.connect(host);
         SystemOperations.login(email.substring(0, email.indexOf('@')), password);
         messageNumber = SystemOperations.getNumberOfMessages();
@@ -84,11 +95,18 @@ public class Controller {
      * @throws HostParseException
      */
     private String parseHost(String email) throws HostParseException {
-        switch (email.substring(email.indexOf('@') + 1)) {
-            case "eunet.rs":
-                return "pop3.eunet.rs";
-            default:
-                throw new HostParseException("");
+        String domainName = email.substring(email.indexOf('@') + 1);
+        String hostAddress = hosts.getProperty(domainName);
+        if(hostAddress == null) {
+            throw new HostParseException("Cannot find host address.");
+        }
+        return hostAddress;
+    }
+    
+    private void loadHosts() throws FileNotFoundException, IOException {
+        hosts = new Properties();
+        try (InputStream in = new FileInputStream("src/hosts.properties")) {
+            hosts.load(in);
         }
     }
 

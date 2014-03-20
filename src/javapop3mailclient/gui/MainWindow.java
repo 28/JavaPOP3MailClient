@@ -5,6 +5,7 @@ import java.util.List;
 import javapop3mailclient.controller.Controller;
 import javapop3mailclient.domain.Message;
 import javapop3mailclient.gui.models.MessagesTableModel;
+import javapop3mailclient.systemoperations.ErrResponseException;
 import javax.swing.JOptionPane;
 
 /**
@@ -167,7 +168,11 @@ public class MainWindow extends javax.swing.JFrame {
      * @param evt
      */
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        System.exit(0);
+        try {
+            Controller.getInstance().exit();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     /**
@@ -207,7 +212,7 @@ public class MainWindow extends javax.swing.JFrame {
             Controller.getInstance().refresh();
             setTexts();
             fillMessagesTable();
-        } catch (IOException ex) {
+        } catch (IOException | ErrResponseException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_refreshButtonActionPerformed
@@ -264,16 +269,24 @@ public class MainWindow extends javax.swing.JFrame {
      *
      */
     private void setTexts() {
-        this.setTitle("JavaPOP3MailClient - " + Controller.getInstance().getEmail());
-        numberOfNewMessagesTextField.setText(Controller.getInstance().getMessageNumber() + "");
+        try {
+            this.setTitle("JavaPOP3MailClient - " + Controller.getInstance().getEmail());
+            numberOfNewMessagesTextField.setText(Controller.getInstance().getMessageNumber() + "");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
      *
      */
     private void fillMessagesTable() {
-        List<Message> messages = Controller.getInstance().getMessages();
-        MessagesTableModel mtm = new MessagesTableModel(messages);
-        messagesTable.setModel(mtm);
+        try {
+            List<Message> messages = Controller.getInstance().getMessages();
+            MessagesTableModel mtm = new MessagesTableModel(messages);
+            messagesTable.setModel(mtm);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

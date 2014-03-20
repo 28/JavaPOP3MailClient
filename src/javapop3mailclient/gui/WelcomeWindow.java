@@ -4,6 +4,7 @@ import java.io.IOException;
 import javapop3mailclient.controller.Controller;
 import javapop3mailclient.controller.HostParseException;
 import javapop3mailclient.systemoperations.CredentialsFormException;
+import javapop3mailclient.systemoperations.ErrResponseException;
 import javax.swing.JOptionPane;
 
 /**
@@ -113,15 +114,19 @@ public class WelcomeWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     /**
      *
      * @param evt
      */
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        System.exit(0);
+        try {
+            Controller.getInstance().exit();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_exitMenuItemActionPerformed
-    
+
     /**
      *
      * @param evt
@@ -130,7 +135,7 @@ public class WelcomeWindow extends javax.swing.JFrame {
         AboutWindow aboutWindow = new AboutWindow(this, true);
         aboutWindow.setVisible(true);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
-    
+
     /**
      *
      * @param evt
@@ -143,12 +148,9 @@ public class WelcomeWindow extends javax.swing.JFrame {
             MainWindow mainWindow = new MainWindow();
             mainWindow.setVisible(true);
             this.dispose();
-        } catch (HostParseException | IOException ex) {
+        } catch (HostParseException | IOException | CredentialsFormException | ErrResponseException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
-        } catch (CredentialsFormException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
-            emailTextField.setText("");
-            passwordPasswordField.setText("");
+            clearFields();
         }
     }//GEN-LAST:event_getMailButtonActionPerformed
 
@@ -199,4 +201,9 @@ public class WelcomeWindow extends javax.swing.JFrame {
     private javax.swing.JPasswordField passwordPasswordField;
     private javax.swing.JMenuBar welcomeWindowMenuBar;
     // End of variables declaration//GEN-END:variables
+
+    private void clearFields() {
+        emailTextField.setText("");
+        passwordPasswordField.setText("");
+    }
 }

@@ -27,8 +27,9 @@ public class SystemOperations {
      *
      * @param host
      * @throws IOException
+     * @throws javapop3mailclient.systemoperations.ErrResponseException
      */
-    public static void connect(String host) throws IOException {
+    public static void connect(String host) throws IOException, ErrResponseException {
         socket = new Socket();
         socket.connect(new InetSocketAddress(host, 110));
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -41,17 +42,20 @@ public class SystemOperations {
      * @param username
      * @param password
      * @throws IOException
+     * @throws javapop3mailclient.systemoperations.ErrResponseException
      */
-    public static void login(String username, String password) throws IOException {
+    public static void login(String username, String password) throws IOException, ErrResponseException {
         sendCommand("USER " + username);
         sendCommand("PASS " + password);
     }
 
     /**
      *
-     * @return @throws IOException
+     * @return 
+     * @throws IOException
+     * @throws javapop3mailclient.systemoperations.ErrResponseException
      */
-    public static int getNumberOfMessages() throws IOException {
+    public static int getNumberOfMessages() throws IOException, ErrResponseException {
         String response = sendCommand("STAT");
         String[] values = response.split(" ");
         return Integer.parseInt(values[1]);
@@ -60,8 +64,9 @@ public class SystemOperations {
     /**
      *
      * @return @throws IOException
+     * @throws javapop3mailclient.systemoperations.ErrResponseException
      */
-    public static List<Message> getMessages() throws IOException {
+    public static List<Message> getMessages() throws IOException, ErrResponseException {
         int numOfMessages = getNumberOfMessages();
         List<Message> messageList = new ArrayList<>();
         for (int i = 1; i <= numOfMessages; i++) {
@@ -83,8 +88,9 @@ public class SystemOperations {
     /**
      *
      * @throws IOException
+     * @throws javapop3mailclient.systemoperations.ErrResponseException
      */
-    public static void logout() throws IOException {
+    public static void logout() throws IOException, ErrResponseException {
         sendCommand("QUIT");
     }
 
@@ -110,7 +116,7 @@ public class SystemOperations {
      * @return String
      * @throws IOException
      */
-    private static String sendCommand(String command) throws IOException {
+    private static String sendCommand(String command) throws IOException, ErrResponseException {
         writer.write(command + '\n');
         writer.flush();
         return readResponseLine();
@@ -122,7 +128,7 @@ public class SystemOperations {
      * @return
      * @throws IOException
      */
-    private static Message getMessage(int i) throws IOException {
+    private static Message getMessage(int i) throws IOException, ErrResponseException {
         String response;
         String headerName;
         Map<String, List<String>> headers = new HashMap<>();
@@ -160,10 +166,10 @@ public class SystemOperations {
      * @return String
      * @throws IOException
      */
-    private static String readResponseLine() throws IOException {
+    private static String readResponseLine() throws IOException, ErrResponseException {
         String response = reader.readLine();
         if (response.startsWith("-ERR")) {
-            throw new RuntimeException("Error in server response." + response);
+            throw new ErrResponseException("Error in server response." + response.replace("-ERR", ""));
         }
         return response;
     }
