@@ -9,13 +9,15 @@ import javapop3mailclient.systemoperations.ErrResponseException;
 import javax.swing.JOptionPane;
 
 /**
+ * This window displays the mailbox of the user.
  *
  * @author Dejan Josifovic
+ * @version 1.0
  */
 public class MainWindow extends javax.swing.JFrame {
 
     /**
-     * Creates new form MainWindow
+     * Creates new form MainWindow.
      */
     public MainWindow() {
         initComponents();
@@ -40,7 +42,7 @@ public class MainWindow extends javax.swing.JFrame {
         messageBodyTextAreaScrollPane = new javax.swing.JScrollPane();
         messageBodyTextArea = new javax.swing.JTextArea();
         messageBodyLabel = new javax.swing.JLabel();
-        refreshButton = new javax.swing.JButton();
+        checkMailButton = new javax.swing.JButton();
         exitButton = new javax.swing.JButton();
         mainWindowMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
@@ -81,10 +83,10 @@ public class MainWindow extends javax.swing.JFrame {
 
         messageBodyLabel.setText("Message body: ");
 
-        refreshButton.setText("Refresh");
-        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+        checkMailButton.setText("Check mail");
+        checkMailButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshButtonActionPerformed(evt);
+                checkMailButtonActionPerformed(evt);
             }
         });
 
@@ -110,6 +112,11 @@ public class MainWindow extends javax.swing.JFrame {
         aboutMenu.setText("About");
 
         aboutMenuItem.setText("About");
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed(evt);
+            }
+        });
         aboutMenu.add(aboutMenuItem);
 
         mainWindowMenuBar.add(aboutMenu);
@@ -130,7 +137,7 @@ public class MainWindow extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(numberOfNewMessagesTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(refreshButton)
+                        .addComponent(checkMailButton)
                         .addGap(18, 18, 18)
                         .addComponent(exitButton))
                     .addGroup(layout.createSequentialGroup()
@@ -148,7 +155,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(numberOfMessagesLabel)
                     .addComponent(numberOfNewMessagesTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(refreshButton)
+                    .addComponent(checkMailButton)
                     .addComponent(exitButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(messagesListLabel)
@@ -163,9 +170,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
     /**
+     * Handles the exit process when called form the file menu.
      *
-     * @param evt
+     * @param evt action performed event.
      */
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         try {
@@ -176,8 +185,10 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     /**
+     * Handles the exit process when exit button is pressed. Also displays the
+     * dialog menu asking the user if he wants to exit.
      *
-     * @param evt
+     * @param evt exit button action performed event.
      */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         int answer = JOptionPane.showConfirmDialog(this, "Exit?", "JavaPOP3MailClient - Exit", JOptionPane.YES_NO_OPTION);
@@ -191,8 +202,10 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_exitButtonActionPerformed
 
     /**
+     * Displays the body of the selected message from the table. If more than
+     * one message is selected it doesn't display anything.
      *
-     * @param evt
+     * @param evt mouse clicked event.
      */
     private void messagesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_messagesTableMouseClicked
         if (messagesTable.getSelectedRowCount() == 1) {
@@ -204,20 +217,33 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_messagesTableMouseClicked
 
     /**
+     * Calls the check mail method when check mail button is clicked.
      *
-     * @param evt
+     * @param evt action performed event.
      */
-    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+    private void checkMailButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMailButtonActionPerformed
         try {
-            Controller.getInstance().refresh();
+            Controller.getInstance().checkMail();
             setTexts();
             fillMessagesTable();
         } catch (IOException | ErrResponseException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_refreshButtonActionPerformed
+    }//GEN-LAST:event_checkMailButtonActionPerformed
 
     /**
+     * Displays the new About Window.
+     *
+     * @param evt action performed event.
+     */
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+        AboutWindow aboutWindow = new AboutWindow(this, true);
+        aboutWindow.setVisible(true);
+    }//GEN-LAST:event_aboutMenuItemActionPerformed
+
+    /**
+     * Main method of the window.
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -250,6 +276,7 @@ public class MainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu aboutMenu;
     private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JButton checkMailButton;
     private javax.swing.JButton exitButton;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
@@ -262,11 +289,10 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane messagesTableScrollPane;
     private javax.swing.JLabel numberOfMessagesLabel;
     private javax.swing.JTextField numberOfNewMessagesTextField;
-    private javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
 
     /**
-     *
+     * Sets the window title text and number of messages field text.
      */
     private void setTexts() {
         try {
@@ -278,7 +304,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     /**
-     *
+     * Creates the table model and sets the messages list and fills the table.
      */
     private void fillMessagesTable() {
         try {

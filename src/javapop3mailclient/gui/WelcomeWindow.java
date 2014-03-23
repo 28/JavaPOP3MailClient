@@ -8,13 +8,15 @@ import javapop3mailclient.systemoperations.ErrResponseException;
 import javax.swing.JOptionPane;
 
 /**
+ * Window for sign in process.
  *
  * @author Dejan Josifovic
+ * @version 1.0
  */
 public class WelcomeWindow extends javax.swing.JFrame {
 
     /**
-     *
+     * Creates the new WelcomeWindow.
      */
     public WelcomeWindow() {
         initComponents();
@@ -116,8 +118,9 @@ public class WelcomeWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
+     * Handles the exit process when exit menu is called.
      *
-     * @param evt
+     * @param evt action performed event.
      */
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         try {
@@ -128,8 +131,9 @@ public class WelcomeWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     /**
+     * Displays the new About Window.
      *
-     * @param evt
+     * @param evt action performed event.
      */
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
         AboutWindow aboutWindow = new AboutWindow(this, true);
@@ -137,8 +141,10 @@ public class WelcomeWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     /**
+     * Handles the sign in process, displays the main window and closes this
+     * window.
      *
-     * @param evt
+     * @param evt action performed event.
      */
     private void getMailButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getMailButtonActionPerformed
         try {
@@ -155,6 +161,8 @@ public class WelcomeWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_getMailButtonActionPerformed
 
     /**
+     * Main method of the window.
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -202,6 +210,9 @@ public class WelcomeWindow extends javax.swing.JFrame {
     private javax.swing.JMenuBar welcomeWindowMenuBar;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Clears the email and password fields.
+     */
     private void clearFields() {
         emailTextField.setText("");
         passwordPasswordField.setText("");

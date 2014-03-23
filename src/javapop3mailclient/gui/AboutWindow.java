@@ -1,19 +1,23 @@
 package javapop3mailclient.gui;
 
 /**
+ * Window with the brief explanation of the JavaPOP3MailClient.
  *
  * @author Dejan Josifovic
+ * @version 1.0
  */
 public class AboutWindow extends javax.swing.JDialog {
 
     /**
-     * Creates new form AboutWindow
-     * @param parent
-     * @param modal
+     * Creates new form AboutWindow.
+     *
+     * @param parent of the window.
+     * @param modal boolean value that specifies if window is modal.
      */
     public AboutWindow(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setAboutText();
     }
 
     /**
@@ -25,23 +29,70 @@ public class AboutWindow extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        aboutTextAreaScrollPane = new javax.swing.JScrollPane();
+        aboutTextArea = new javax.swing.JTextArea();
+        exitButton = new javax.swing.JButton();
+        aboutLabel = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("JavaPOP3MailClient - About");
+
+        aboutTextArea.setEditable(false);
+        aboutTextArea.setColumns(20);
+        aboutTextArea.setRows(5);
+        aboutTextAreaScrollPane.setViewportView(aboutTextArea);
+
+        exitButton.setText("Exit");
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitButtonActionPerformed(evt);
+            }
+        });
+
+        aboutLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        aboutLabel.setText("About JavaPOP3MailClient:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(aboutTextAreaScrollPane)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(aboutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(139, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(168, 168, 168)
+                .addComponent(exitButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(aboutLabel)
+                .addGap(11, 11, 11)
+                .addComponent(aboutTextAreaScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(exitButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     /**
+     * Closes this dialog window.
+     *
+     * @param evt action performed event.
+     */
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_exitButtonActionPerformed
+
+    /**
+     * Main method of the window.
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -79,5 +130,17 @@ public class AboutWindow extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel aboutLabel;
+    private javax.swing.JTextArea aboutTextArea;
+    private javax.swing.JScrollPane aboutTextAreaScrollPane;
+    private javax.swing.JButton exitButton;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Sets the about text in the text area.
+     */
+    private void setAboutText() {
+        String aboutText = "";
+        aboutTextArea.setText(aboutText);
+    }
 }

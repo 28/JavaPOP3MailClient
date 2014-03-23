@@ -5,13 +5,23 @@ import javapop3mailclient.domain.Message;
 import javax.swing.table.AbstractTableModel;
 
 /**
+ * Table model for the messages table.
  *
  * @author Dejan Josifovic
+ * @version 1.0
  */
 public class MessagesTableModel extends AbstractTableModel {
 
+    /**
+     * Messages list.
+     */
     private List<Message> messages;
 
+    /**
+     * Creates a new Messages table model.
+     *
+     * @param messages list.
+     */
     public MessagesTableModel(List<Message> messages) {
         this.messages = messages;
     }
@@ -61,10 +71,21 @@ public class MessagesTableModel extends AbstractTableModel {
         }
     }
 
+    /**
+     * Getter of the messages field.
+     *
+     * @return messages list.
+     */
     public List<Message> getMessages() {
         return messages;
     }
 
+    /**
+     * Setter of the messages field. When messages are set applies the data to
+     * the table.
+     *
+     * @param messages list.
+     */
     public void setMessages(List<Message> messages) {
         this.messages = messages;
         fireTableDataChanged();
