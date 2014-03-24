@@ -19,6 +19,6 @@ category of problems.
 
 ## Usage
 
-1. Install NetBeans;
+1. Install <a href="https://netbeans.org/">NetBeans</a>;
 2. Download JavaPOP3MailClient;
 3. Load JavaPOP3MailClient project in NetBeans(since it is stored as a NetBeans project).
