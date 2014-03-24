@@ -72,6 +72,17 @@ public class MessagesTableModel extends AbstractTableModel {
     }
 
     /**
+     * Removes the message with the corresponding index from the messages list
+     * and updates the table.
+     *
+     * @param i index of the message that needs to be deleted.
+     */
+    public void deleteMessage(int i) {
+        messages.remove(i);
+        fireTableDataChanged();
+    }
+
+    /**
      * Getter of the messages field.
      *
      * @return messages list.

@@ -44,6 +44,7 @@ public class MainWindow extends javax.swing.JFrame {
         messageBodyLabel = new javax.swing.JLabel();
         checkMailButton = new javax.swing.JButton();
         exitButton = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
         mainWindowMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
@@ -97,6 +98,13 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
         fileMenu.setText("File");
 
         exitMenuItem.setText("Exit");
@@ -137,6 +145,8 @@ public class MainWindow extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(numberOfNewMessagesTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(deleteButton)
+                        .addGap(18, 18, 18)
                         .addComponent(checkMailButton)
                         .addGap(18, 18, 18)
                         .addComponent(exitButton))
@@ -156,7 +166,8 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(numberOfMessagesLabel)
                     .addComponent(numberOfNewMessagesTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(checkMailButton)
-                    .addComponent(exitButton))
+                    .addComponent(exitButton)
+                    .addComponent(deleteButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(messagesListLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -242,6 +253,23 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     /**
+     * Calls the delete message process when pressed.
+     *
+     * @param evt action performed event.
+     */
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        if (messagesTable.getSelectedRowCount() == 1) {
+            try {
+                int row = messagesTable.getSelectedRow();
+                Controller.getInstance().deleteMessage(row);
+                ((MessagesTableModel) messagesTable.getModel()).deleteMessage(row);
+            } catch (IOException | ErrResponseException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    /**
      * Main method of the window.
      *
      * @param args the command line arguments
@@ -277,6 +305,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu aboutMenu;
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton checkMailButton;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JButton exitButton;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;

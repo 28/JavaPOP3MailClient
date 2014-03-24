@@ -12,7 +12,7 @@ import javapop3mailclient.systemoperations.ErrResponseException;
 import javapop3mailclient.systemoperations.SystemOperations;
 
 /**
- * The controller handles the communication between gui and system operations
+ * The controller handles the communication between GUI and system operations
  * and also stores the host name, password, email, number of messages and
  * messages of the user.
  *
@@ -35,12 +35,12 @@ public class Controller {
      * User password.
      */
     private String password;
-    
+
     /**
      * List of all messages in user mailbox.
      */
     private List<Message> messages;
-    
+
     /**
      * Number of messages in mailbox.
      */
@@ -51,6 +51,11 @@ public class Controller {
      */
     private String email;
 
+    /**
+     * Username which is the first part of the e-mail, before the @ sign.
+     */
+    private String username;
+    
     /**
      * Hosts properties file.
      */
@@ -96,6 +101,7 @@ public class Controller {
         SystemOperations.credentialsFormOk(email, password);
         this.email = email;
         this.password = password;
+        this.username = email.substring(0, email.indexOf('@'));
         host = parseHost(email);
         checkMail();
     }
@@ -109,10 +115,26 @@ public class Controller {
      */
     public void checkMail() throws IOException, ErrResponseException {
         SystemOperations.connect(host);
-        //creates the username needed for the POP3 USER parameter by making a substring of the email.
-        SystemOperations.login(email.substring(0, email.indexOf('@')), password);
+        SystemOperations.login(username, password);
         messageNumber = SystemOperations.getNumberOfMessages();
         messages = SystemOperations.getMessages();
+        SystemOperations.logout();
+        SystemOperations.disconnect();
+    }
+
+    /**
+     * Deletes one message from users mailbox. Calls all the required system
+     * operations.
+     *
+     * @param i the number of the message in messages list in application
+     * memory.
+     * @throws IOException
+     * @throws ErrResponseException
+     */
+    public void deleteMessage(int i) throws IOException, ErrResponseException {
+        SystemOperations.connect(host);
+        SystemOperations.login(username, password);
+        SystemOperations.deleteMessage(messageNumber);
         SystemOperations.logout();
         SystemOperations.disconnect();
     }

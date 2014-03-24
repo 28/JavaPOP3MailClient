@@ -44,7 +44,7 @@ public class SystemOperations {
      * port) and initializes the reader and writer.
      *
      * @param host address of the pop3 server.
-     * @throws IOException when reader and/or writer cannot be created.
+     * @throws IOException
      * @throws ErrResponseException when response is an error.
      */
     public static void connect(String host) throws IOException, ErrResponseException {
@@ -65,7 +65,7 @@ public class SystemOperations {
      * @param username of the user.
      * @param password of the user.
      * @throws IOException
-     * @throws ErrResponseException
+     * @throws ErrResponseException when response is an error.
      */
     public static void login(String username, String password) throws IOException, ErrResponseException {
         sendCommand("USER " + username);
@@ -82,7 +82,7 @@ public class SystemOperations {
      *
      * @return number of messages.
      * @throws IOException
-     * @throws ErrResponseException
+     * @throws ErrResponseException when response is an error.
      */
     public static int getNumberOfMessages() throws IOException, ErrResponseException {
         String response = sendCommand("STAT");
@@ -96,7 +96,7 @@ public class SystemOperations {
      *
      * @return list of messages.
      * @throws IOException
-     * @throws ErrResponseException
+     * @throws ErrResponseException when response is an error.
      */
     public static List<Message> getMessages() throws IOException, ErrResponseException {
         int numOfMessages = getNumberOfMessages();
@@ -105,6 +105,24 @@ public class SystemOperations {
             messageList.add(getMessage(i));
         }
         return messageList;
+    }
+
+    /**
+     * Deletes one message from users mailbox. The method sends DELE command to
+     * the server. The DELE command is accompanied by a parameter that
+     * represents the message number in users mailbox. The number given by the
+     * method parameter is the message number in application memory. Since those
+     * numbers start from 0 and mailbox numbers start from 1, this number must
+     * be incremented one time.
+     *
+     * @param messageNumber application memory number of the message that needs
+     * to be deleted.
+     * @throws ErrResponseException when response is an error.
+     * @throws IOException
+     */
+    public static void deleteMessage(int messageNumber) throws ErrResponseException, IOException {
+        int mN = messageNumber++;
+        sendCommand("DELE " + mN);
     }
 
     /**
@@ -124,7 +142,7 @@ public class SystemOperations {
      * Logs out from the server by sending the QUIT command without parameters.
      *
      * @throws IOException
-     * @throws ErrResponseException
+     * @throws ErrResponseException when response is an error.
      */
     public static void logout() throws IOException, ErrResponseException {
         sendCommand("QUIT");
@@ -158,7 +176,7 @@ public class SystemOperations {
      *
      * @param command string that contains command and command parameters.
      * @return String server response that is not error.
-     * @throws IOException if writer cannot write to output stream.
+     * @throws IOException
      * @throws ErrResponseException when server returns a error.
      */
     private static String sendCommand(String command) throws IOException, ErrResponseException {
@@ -186,7 +204,7 @@ public class SystemOperations {
      * @param i that represents the message number.
      * @return a new Message object.
      * @throws IOException
-     * @throws ErrResponseException
+     * @throws ErrResponseException when response is an error.
      */
     private static Message getMessage(int i) throws IOException, ErrResponseException {
         String response;
@@ -194,10 +212,18 @@ public class SystemOperations {
         Map<String, List<String>> headers = new HashMap<>();
         sendCommand("RETR " + i);
         while ((response = readResponseLine()).length() != 0) {
+            //To make things easier folded header parts are skipped.
             if (response.startsWith("\t")) {
                 continue;
             }
             int colonPosition = response.indexOf(":");
+            /*Sometimes header value or parts of the header value don't have colon 
+             needed for separation, thus the indexOf method would return -1 and 
+             that would later cause trouble. Since often these header parts are 
+             not much important to end users it is easier to just skip them.*/
+            if (colonPosition == -1) {
+                continue;
+            }
             headerName = response.substring(0, colonPosition);
             String headerValue;
             if (headerName.length() <= colonPosition) {
@@ -226,7 +252,7 @@ public class SystemOperations {
      *
      * @return String that is the server response.
      * @throws IOException when reader cannot read input stream.
-     * @throws ErrResponseException when server response starts with -ERR.
+     * @throws ErrResponseException when response is an error.
      */
     private static String readResponseLine() throws IOException, ErrResponseException {
         String response = reader.readLine();
