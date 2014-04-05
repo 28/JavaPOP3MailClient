@@ -7,7 +7,10 @@ All the have documentation that explains how and why thing work as they work. Al
 GUI that looks like a mail client with basic functionalities. 
 
 The application is meant to be used for learning and understanding of POP3 protocol and 
-programming an application that needs to use a certain protocol.
+programming an application that needs to use a certain protocol. This application illustrates
+some basic POP3 function that are the core of the protocol. To find out all about the POP3 protocol
+read the <a href="http://tools.ietf.org/html/rfc1939">RFC 1939</> document. This document is also used
+as a sole guide for making this application(a far as the protocol goes).
 
 Application only uses bare POP3 protocol that means that it doesn't support MIME and IMAP.
 Also it does not implement SMTP although these two always come in pair. Some providers 
@@ -19,6 +22,8 @@ category of problems.
 
 ## Usage
 
+JavaPOP3MailClient is currently implemented as a NetBeans project.
+
 1. Install <a href="https://netbeans.org/">NetBeans</a>;
 2. Download JavaPOP3MailClient;
-3. Load JavaPOP3MailClient project in NetBeans(since it is stored as a NetBeans project).
+3. Load JavaPOP3MailClient project in NetBeans.
