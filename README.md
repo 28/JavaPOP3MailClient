@@ -27,3 +27,7 @@ JavaPOP3MailClient is currently implemented as a NetBeans project.
 1. Install <a href="https://netbeans.org/">NetBeans</a>;
 2. Download JavaPOP3MailClient;
 3. Load JavaPOP3MailClient project in NetBeans.
+
+## License
+
+Copyright &copy; JavaPOP3MailClient 2014.
