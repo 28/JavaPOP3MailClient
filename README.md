@@ -32,4 +32,4 @@ JavaPOP3MailClient is currently implemented as a NetBeans project.
 
 Distributed under GNU GENERAL PUBLIC LICENSE Version 2
 
-Copyright &copy; JavaPOP3MailClient 2014.
+Copyright &copy; Dejan Josifović 2014.
