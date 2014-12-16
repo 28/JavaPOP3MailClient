@@ -1,8 +1,10 @@
 package javapop3mailclient.domain;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This is the representation of the e-mail message.
@@ -10,7 +12,7 @@ import java.util.Map;
  * @author Dejan Josifovic
  * @version 1.0
  */
-public class Message {
+public class Message implements Serializable {
 
     /**
      * Map of the mail headers. Keys are the names of the headers and values are
@@ -25,51 +27,14 @@ public class Message {
     private final String body;
 
     /**
-     * Creates a new Message.
+     * Creates a new Message object.
      *
-     * @param headers map of the message.
-     * @param body of the message.
+     * @param headers headers map of the message.
+     * @param body text of the message.
      */
     public Message(Map<String, List<String>> headers, String body) {
         this.headers = Collections.unmodifiableMap(headers);
         this.body = body;
-    }
-
-    /**
-     * Creates the string representation of the whole message.
-     *
-     * @return string representation of the message.
-     */
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (String key : headers.keySet()) {
-            builder.append(key).append(": ");
-            for (String v : headers.get(key)) {
-                builder.append(v).append(" ");
-            }
-            builder.append("\n");
-        }
-        builder.append("\n").append(body);
-        return builder.toString();
-    }
-
-    /**
-     * Getter of the headers field.
-     *
-     * @return map of the headers of the message.
-     */
-    public Map<String, List<String>> getHeaders() {
-        return headers;
-    }
-
-    /**
-     * Getter of the body field.
-     *
-     * @return body of the message.
-     */
-    public String getBody() {
-        return body;
     }
 
     /**
@@ -91,5 +56,68 @@ public class Message {
             valuesSB.append(',');
         }
         return valuesSB.toString();
+    }
+    
+    /**
+     * Creates the string representation of the whole message
+     * with all headers and body.
+     *
+     * @return string representation of the message.
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (String key : headers.keySet()) {
+            builder.append(key).append(": ");
+            for (String v : headers.get(key)) {
+                builder.append(v).append(" ");
+            }
+            builder.append("\n");
+        }
+        builder.append("\n").append(body);
+        return builder.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 13 * hash + Objects.hashCode(this.headers);
+        hash = 13 * hash + Objects.hashCode(this.body);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Message other = (Message) obj;
+        return this.getHeader("To").equals(other.getHeader("To")) && 
+                this.getHeader("From").equals(other.getHeader("From")) &&
+                this.getHeader("Subject").equals(other.getHeader("Subject")) &&
+                this.getBody().equals(other.getBody());
+    }
+
+    
+    
+    /**
+     * Getter of the headers field.
+     *
+     * @return map of the headers of the message.
+     */
+    public Map<String, List<String>> getHeaders() {
+        return headers;
+    }
+
+    /**
+     * Getter of the body field.
+     *
+     * @return body of the message.
+     */
+    public String getBody() {
+        return body;
     }
 }
