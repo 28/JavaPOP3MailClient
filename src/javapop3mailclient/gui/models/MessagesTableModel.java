@@ -54,7 +54,7 @@ public class MessagesTableModel extends AbstractTableModel {
                     return "N/A";
             }
         }
-        return "";
+        return "N/A";
     }
 
     @Override
