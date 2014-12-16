@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: javapop3mailclient.gui.WelcomeWindow
+Implementation-Title: JavaPOP3MailClient
+Implementation-Version: 1.1
