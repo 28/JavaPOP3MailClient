@@ -48,8 +48,6 @@ public class MainWindow extends javax.swing.JFrame {
         mainWindowMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
-        aboutMenu = new javax.swing.JMenu();
-        aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -116,18 +114,6 @@ public class MainWindow extends javax.swing.JFrame {
         fileMenu.add(exitMenuItem);
 
         mainWindowMenuBar.add(fileMenu);
-
-        aboutMenu.setText("About");
-
-        aboutMenuItem.setText("About");
-        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aboutMenuItemActionPerformed(evt);
-            }
-        });
-        aboutMenu.add(aboutMenuItem);
-
-        mainWindowMenuBar.add(aboutMenu);
 
         setJMenuBar(mainWindowMenuBar);
 
@@ -243,16 +229,6 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_checkMailButtonActionPerformed
 
     /**
-     * Displays the new About Window.
-     *
-     * @param evt action performed event.
-     */
-    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        AboutWindow aboutWindow = new AboutWindow(this, true);
-        aboutWindow.setVisible(true);
-    }//GEN-LAST:event_aboutMenuItemActionPerformed
-
-    /**
      * Calls the delete message process when pressed.
      *
      * @param evt action performed event.
@@ -302,8 +278,6 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu aboutMenu;
-    private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton checkMailButton;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton exitButton;

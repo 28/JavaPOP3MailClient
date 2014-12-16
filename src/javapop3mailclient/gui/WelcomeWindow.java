@@ -39,8 +39,6 @@ public class WelcomeWindow extends javax.swing.JFrame {
         welcomeWindowMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
-        helpMenu = new javax.swing.JMenu();
-        aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JavaPOP3MailClient - Welcome");
@@ -67,18 +65,6 @@ public class WelcomeWindow extends javax.swing.JFrame {
         fileMenu.add(exitMenuItem);
 
         welcomeWindowMenuBar.add(fileMenu);
-
-        helpMenu.setText("Help");
-
-        aboutMenuItem.setText("About");
-        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aboutMenuItemActionPerformed(evt);
-            }
-        });
-        helpMenu.add(aboutMenuItem);
-
-        welcomeWindowMenuBar.add(helpMenu);
 
         setJMenuBar(welcomeWindowMenuBar);
 
@@ -129,16 +115,6 @@ public class WelcomeWindow extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_exitMenuItemActionPerformed
-
-    /**
-     * Displays the new About Window.
-     *
-     * @param evt action performed event.
-     */
-    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        AboutWindow aboutWindow = new AboutWindow(this, true);
-        aboutWindow.setVisible(true);
-    }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     /**
      * Handles the sign in process, displays the main window and closes this
@@ -198,13 +174,11 @@ public class WelcomeWindow extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JLabel emailLabel;
     private java.awt.TextField emailTextField;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private java.awt.Button getMailButton;
-    private javax.swing.JMenu helpMenu;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JPasswordField passwordPasswordField;
     private javax.swing.JMenuBar welcomeWindowMenuBar;
