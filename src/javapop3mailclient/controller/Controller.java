@@ -1,7 +1,6 @@
 package javapop3mailclient.controller;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -55,7 +54,7 @@ public class Controller {
      * Username which is the first part of the e-mail, before the @ sign.
      */
     private String username;
-    
+
     /**
      * Hosts properties file.
      */
@@ -168,15 +167,13 @@ public class Controller {
     }
 
     /**
-     * Loads the hosts properties file via FileInputStream. It always uses the
-     * same file path so the file must not be moved.
      *
-     * @throws FileNotFoundException when file cannot be found.
+     *
      * @throws IOException when the input stream cannot read from the file.
      */
-    private void loadHosts() throws FileNotFoundException, IOException {
+    private void loadHosts() throws IOException {
         hosts = new Properties();
-        try (InputStream in = new FileInputStream("src/hosts.properties")) {
+        try (InputStream in = new FileInputStream("./hosts.properties")) {
             hosts.load(in);
         }
     }
