@@ -15,13 +15,14 @@ import java.util.Map;
 
 /**
  * This class represents the system operations that are called by the
- * controller. Each method or operation represents the sending of one pop3
- * command to the pop3 server.
+ * controller. Each method is a realization of some POP3 function.
  *
  * @author Dejan Josifovic
  * @version 1.0
  */
 public class SystemOperations {
+
+    private static final int POP3_PORT_NUMBER = 110;
 
     /**
      * Socket by which the connection is established.
@@ -39,32 +40,32 @@ public class SystemOperations {
     private static BufferedWriter writer;
 
     /**
-     * This method connect to the pop3 server. It creates a new Socket,
-     * establish the connection to the given host on the port 110(default POP3
+     * This method connect to the POP3 server. It creates a new Socket,
+     * establish the connection to the given host on the port 110 (default POP3
      * port) and initializes the reader and writer.
      *
-     * @param host address of the pop3 server.
-     * @throws IOException
+     * @param host address of the POP3 server.
+     * @throws IOException if reader and writer cannot be created.
      * @throws ErrResponseException when response is an error.
      */
     public static void connect(String host) throws IOException, ErrResponseException {
         socket = new Socket();
-        socket.connect(new InetSocketAddress(host, 110));
+        socket.connect(new InetSocketAddress(host, POP3_PORT_NUMBER));
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         readResponseLine();
     }
 
     /**
-     * This method handles the authorization with the pop3 server. First it
+     * This method handles the authorization with the POP3 server. First it
      * sends the USER command with the username parameter and after, if the
      * server returns a OK response, sends the PASS command with the password
      * parameter. Then if the server return an OK user has successfully signed
-     * in to the pop3 server.
+     * in to the POP3 server.
      *
      * @param username of the user.
      * @param password of the user.
-     * @throws IOException
+     * @throws IOException if the commands cannot be sent via stream
      * @throws ErrResponseException when response is an error.
      */
     public static void login(String username, String password) throws IOException, ErrResponseException {
@@ -76,12 +77,13 @@ public class SystemOperations {
      * Retrieves the total number of messages in user mailbox. THe method sends
      * the STAT command to the server, and the server responds with three words.
      * First is OK, the second is the number of messages and the third is the
-     * total length of the messages in octets. The words are separated by a
-     * single space so the method splits the response and returns the second
-     * word which is the number of messages.
+     * total length of the messages in octets (which means bytes). The words are
+     * separated by a single space so the method splits the response and returns
+     * the second word which is the number of messages.
      *
      * @return number of messages.
-     * @throws IOException
+     * @throws IOException if the commands cannot be sent via stream or the
+     * response can't be read.
      * @throws ErrResponseException when response is an error.
      */
     public static int getNumberOfMessages() throws IOException, ErrResponseException {
@@ -95,7 +97,7 @@ public class SystemOperations {
      * messages as a for loop parameter and <code>getMessage()</code> method.
      *
      * @return list of messages.
-     * @throws IOException
+     * @throws IOException if the number of messages can't be retrieved.
      * @throws ErrResponseException when response is an error.
      */
     public static List<Message> getMessages() throws IOException, ErrResponseException {
@@ -115,10 +117,15 @@ public class SystemOperations {
      * numbers start from 0 and mailbox numbers start from 1, this number must
      * be incremented one time.
      *
+     * POP3 protocol deletes the message after it is retrieved from the server.
+     * That means in some situations this command will fail because the message
+     * has already been deleted. This command should work with <code>LIST</code>
+     * command to avoid this scenario.
+     *
      * @param messageNumber application memory number of the message that needs
      * to be deleted.
      * @throws ErrResponseException when response is an error.
-     * @throws IOException
+     * @throws IOException if the commands cannot be sent via stream.
      */
     public static void deleteMessage(int messageNumber) throws ErrResponseException, IOException {
         int mN = messageNumber++;
@@ -128,7 +135,7 @@ public class SystemOperations {
     /**
      * Disconnect from the server by closing the socket.
      *
-     * @throws IOException
+     * @throws IOException if socket can't close.
      */
     public static void disconnect() throws IOException {
         if (socket != null) {
@@ -171,12 +178,12 @@ public class SystemOperations {
     }
 
     /**
-     * This method sends command to the pop3 server and then reads a response
+     * This method sends command to the POP3 server and then reads a response
      * line and returns it. Each command is followed by a new line character.
      *
      * @param command string that contains command and command parameters.
      * @return String server response that is not error.
-     * @throws IOException
+     * @throws IOException id command can't be sent.
      * @throws ErrResponseException when server returns a error.
      */
     private static String sendCommand(String command) throws IOException, ErrResponseException {
@@ -199,11 +206,11 @@ public class SystemOperations {
      * When the server returns an empty line that means its about to start
      * sending the message body. Line by line is read and stored in a
      * StringBuilder object. At the end server return a terminating line that
-     * contains dot character.
+     * contains dot "." character.
      *
      * @param i that represents the message number.
      * @return a new Message object.
-     * @throws IOException
+     * @throws IOException when reading/writing can't be done.
      * @throws ErrResponseException when response is an error.
      */
     private static Message getMessage(int i) throws IOException, ErrResponseException {
@@ -212,15 +219,10 @@ public class SystemOperations {
         Map<String, List<String>> headers = new HashMap<>();
         sendCommand("RETR " + i);
         while ((response = readResponseLine()).length() != 0) {
-            //To make things easier folded header parts are skipped.
             if (response.startsWith("\t")) {
                 continue;
             }
             int colonPosition = response.indexOf(":");
-            /*Sometimes header value or parts of the header value don't have colon 
-             needed for separation, thus the indexOf method would return -1 and 
-             that would later cause trouble. Since often these header parts are 
-             not much important to end users it is easier to just skip them.*/
             if (colonPosition == -1) {
                 continue;
             }
@@ -248,7 +250,8 @@ public class SystemOperations {
     }
 
     /**
-     * Reads the server response and returns it.
+     * Reads the server response and returns it. If the response begins with
+     * "-ERR" it throws <code>ErrResponseException</code>.
      *
      * @return String that is the server response.
      * @throws IOException when reader cannot read input stream.
