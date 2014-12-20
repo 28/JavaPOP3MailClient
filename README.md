@@ -32,7 +32,7 @@ not to download that release.
 
 ## Usage
 
-Download the release, add some hosts to conf/hosts.properties file and run
+Download the release, extract, add some hosts to hosts.properties file and run
 the standalone jar.
 
 ## License
