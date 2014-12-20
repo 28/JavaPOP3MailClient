@@ -1,10 +1,6 @@
 package javapop3mailclient.gui;
 
-import java.io.IOException;
 import javapop3mailclient.controller.Controller;
-import javapop3mailclient.controller.HostParseException;
-import javapop3mailclient.systemoperations.CredentialsFormException;
-import javapop3mailclient.systemoperations.ErrResponseException;
 import javax.swing.JOptionPane;
 
 /**
@@ -111,7 +107,7 @@ public class WelcomeWindow extends javax.swing.JFrame {
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         try {
             Controller.getInstance().exit();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_exitMenuItemActionPerformed
@@ -130,7 +126,7 @@ public class WelcomeWindow extends javax.swing.JFrame {
             MainWindow mainWindow = new MainWindow();
             mainWindow.setVisible(true);
             this.dispose();
-        } catch (HostParseException | IOException | CredentialsFormException | ErrResponseException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
             clearFields();
         }

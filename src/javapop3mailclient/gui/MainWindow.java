@@ -1,11 +1,9 @@
 package javapop3mailclient.gui;
 
-import java.io.IOException;
 import java.util.List;
 import javapop3mailclient.controller.Controller;
 import javapop3mailclient.domain.Message;
 import javapop3mailclient.gui.models.MessagesTableModel;
-import javapop3mailclient.systemoperations.ErrResponseException;
 import javax.swing.JOptionPane;
 
 /**
@@ -176,7 +174,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         try {
             Controller.getInstance().exit();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_exitMenuItemActionPerformed
@@ -192,7 +190,7 @@ public class MainWindow extends javax.swing.JFrame {
         if (answer == JOptionPane.YES_OPTION) {
             try {
                 Controller.getInstance().exit();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -223,7 +221,7 @@ public class MainWindow extends javax.swing.JFrame {
             Controller.getInstance().checkMail();
             setTexts();
             fillMessagesTable();
-        } catch (IOException | ErrResponseException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_checkMailButtonActionPerformed
@@ -239,7 +237,7 @@ public class MainWindow extends javax.swing.JFrame {
                 int row = messagesTable.getSelectedRow();
                 Controller.getInstance().deleteMessage(row);
                 ((MessagesTableModel) messagesTable.getModel()).deleteMessage(row);
-            } catch (IOException | ErrResponseException ex) {
+            } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -301,7 +299,7 @@ public class MainWindow extends javax.swing.JFrame {
         try {
             this.setTitle("JavaPOP3MailClient - " + Controller.getInstance().getEmail());
             numberOfNewMessagesTextField.setText(Controller.getInstance().getMessageNumber() + "");
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -314,7 +312,7 @@ public class MainWindow extends javax.swing.JFrame {
             List<Message> messages = Controller.getInstance().getMessages();
             MessagesTableModel mtm = new MessagesTableModel(messages);
             messagesTable.setModel(mtm);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
         }
     }
