@@ -105,11 +105,7 @@ public class WelcomeWindow extends javax.swing.JFrame {
      * @param evt action performed event.
      */
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        try {
-            Controller.getInstance().exit();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);
-        }
+        System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     /**
