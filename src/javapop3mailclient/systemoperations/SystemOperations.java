@@ -273,6 +273,7 @@ public class SystemOperations {
         StringBuilder builder = new StringBuilder();
         for(String value : values) {
             builder.append(value);
+            builder.append(",");
         }
         return builder.toString();
     }
