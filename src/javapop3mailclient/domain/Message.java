@@ -78,6 +78,11 @@ public class Message implements Serializable {
         return builder.toString();
     }
 
+    /**
+     * Calculates the hash code of the message;
+     * 
+     * @return hash code of the message.
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -86,6 +91,18 @@ public class Message implements Serializable {
         return hash;
     }
 
+    /**
+     * Checks of two messages are equals. To e-mail messages
+     * are considered equal if they have the same values for
+     * To, From, Subject headers and the same message body.
+     * 
+     * This criteria can be expanded with timestamp headers
+     * like "DATE" but for the purpose of this application
+     * this configuration is enough.
+     * 
+     * @param obj object to check for equality
+     * @return true if messages are equal, false otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
