@@ -6,7 +6,8 @@ JavaPOP3MailClient is a simple Java desktop application that illustrates how
 POP3 protocol works. It has an implementation of basic POP3 functions in well 
 organized architecture. All code is well documented so it explains how and why 
 thing work as they work. Also it has a simple GUI that looks like a mail client
-with basic functionalities. 
+with basic functionalities. The purpose of this project is to show how to
+program a simple mail client. 
 
 The application is meant to be used for learning and understanding of POP3
 protocol and programming an application that needs to use a certain protocol.
@@ -24,16 +25,14 @@ only with SSL which has very different configuration even though it uses POP3.
 That means JavaPOP3MailClient will work for some providers and for other it wont
 (the second group being the larger one).
 
-The purpose of this project is to show how to program a simple mail client the
-right way.
-
 This (1.1) release completely obsoletes the previous version so it is advised
 not to download that release.
 
 ## Usage
 
 Download the release, extract, add some hosts to hosts.properties file and run
-the standalone jar.
+the standalone jar. The properties file must be in the same directory and on
+the same level as the jar.
 
 ## License
 
