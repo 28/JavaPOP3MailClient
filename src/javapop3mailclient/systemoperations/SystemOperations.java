@@ -219,11 +219,9 @@ public class SystemOperations {
         Map<String, List<String>> headers = new HashMap<>();
         sendCommand("RETR " + i);
         while ((response = readResponseLine()).length() != 0) {
-            if (response.startsWith("\t")) {
-                continue;
-            }
             int colonPosition = response.indexOf(":");
-            if (colonPosition == -1) {
+            // skipping folded header values...
+            if (response.startsWith("\t") || colonPosition == -1) {
                 continue;
             }
             headerName = response.substring(0, colonPosition);
