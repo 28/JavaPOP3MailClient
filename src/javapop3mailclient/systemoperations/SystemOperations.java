@@ -9,6 +9,7 @@ import javapop3mailclient.domain.Message;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -215,13 +216,18 @@ public class SystemOperations {
      */
     private static Message getMessage(int i) throws IOException, ErrResponseException {
         String response;
-        String headerName;
+        String headerName = null;
         Map<String, List<String>> headers = new HashMap<>();
         sendCommand("RETR " + i);
         while ((response = readResponseLine()).length() != 0) {
             int colonPosition = response.indexOf(":");
             // skipping folded header values...
+            List<String> headerValues = headers.get(headerName);
             if (response.startsWith("\t") || colonPosition == -1) {
+                if(headerName == null) continue;
+                String values = getHeaderValuesAsString(headerValues);
+                headerValues.clear();
+                headerValues.addAll(Arrays.asList(values.concat(response).split(",")));
                 continue;
             }
             headerName = response.substring(0, colonPosition);
@@ -231,13 +237,13 @@ public class SystemOperations {
             } else {
                 headerValue = "";
             }
-            List<String> headerValues = headers.get(headerName);
+            headerValues = headers.get(headerName);
             if (headerValues == null) {
                 headerValues = new ArrayList<>();
-                headerValues.add(headerValue);
+                headerValues.addAll(Arrays.asList(headerValue.split(",")));
                 headers.put(headerName, headerValues);
             } else {
-                headerValues.add(headerValue);
+                headerValues.addAll(Arrays.asList(headerValue.split(",")));
             }
         }
         StringBuilder bodyBuilder = new StringBuilder();
@@ -261,5 +267,13 @@ public class SystemOperations {
             throw new ErrResponseException("Error in server response." + response.replace("-ERR", ""));
         }
         return response;
+    }
+    
+    private static String getHeaderValuesAsString(List<String> values) {
+        StringBuilder builder = new StringBuilder();
+        for(String value : values) {
+            builder.append(value);
+        }
+        return builder.toString();
     }
 }
