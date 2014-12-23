@@ -224,9 +224,10 @@ public class SystemOperations {
         sendCommand("RETR " + i);
         while ((response = readResponseLine()).length() != 0) {
             int colonPosition = response.indexOf(":");
-            // skipping folded header values...
+            // Handling folded headers. Folded lines don't have colon sign in 
+            // them, by RFC.
             List<String> headerValues = headers.get(headerName);
-            if (response.startsWith("\t") || colonPosition == -1) {
+            if (colonPosition == -1) {
                 if(headerName == null) continue;
                 String values = getValuesAsString(headerValues);
                 headerValues.clear();
