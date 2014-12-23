@@ -16,7 +16,6 @@ import javapop3mailclient.systemoperations.SystemOperations;
  * messages of the user.
  *
  * @author Dejan Josifovic
- * @version 1.0
  */
 public class Controller {
 
@@ -64,7 +63,7 @@ public class Controller {
      * Private constructor of the controller class. Calls the
      * <code>loadHost()</code> method for loading the hosts properties file.
      *
-     * @throws IOException
+     * @throws IOException if hosts can't be loaded from the properties file.
      */
     private Controller() throws IOException {
         loadHosts();
@@ -75,7 +74,8 @@ public class Controller {
      * of the Controller class. If instance is null creates the object.
      *
      * @return singleton instance of the Controller class.
-     * @throws IOException
+     * @throws IOException if hosts can't be loaded from the properties file.
+     * @see Controller()
      */
     public static Controller getInstance() throws IOException {
         if (instance == null) {
@@ -91,12 +91,14 @@ public class Controller {
      *
      * @param email of the user.
      * @param password of the user.
-     * @throws HostParseException
-     * @throws IOException
-     * @throws CredentialsFormException
-     * @throws ErrResponseException
+     * @throws HostParseException if host can't be found in the host list from
+     * the properties files.
+     * @throws IOException if there was an error while retrieving e-mails.
+     * @throws CredentialsFormException if credentials are invalid in form.
+     * @throws ErrResponseException if the server response indicates an error.
      */
-    public void signIn(String email, String password) throws HostParseException, IOException, CredentialsFormException, ErrResponseException {
+    public void signIn(String email, String password) throws HostParseException, 
+            IOException, CredentialsFormException, ErrResponseException {
         SystemOperations.credentialsFormOk(email, password);
         this.email = email;
         this.password = password;
@@ -109,11 +111,12 @@ public class Controller {
      * Checks for new mail. Calls the system operations for connection,
      * authorization, retrieval of the messages and for quitting.
      *
-     * @throws IOException
-     * @throws ErrResponseException
+     * @throws IOException if there was read/write error in communication with
+     * the server.
+     * @throws ErrResponseException if the server response indicates an error.
      */
     public void checkMail() throws IOException, ErrResponseException {
-        SystemOperations.connect(host);
+        SystemOperations.connect(host, null);
         SystemOperations.login(username, password);
         messageNumber = SystemOperations.getNumberOfMessages();
         messages = SystemOperations.getMessages();
@@ -127,11 +130,12 @@ public class Controller {
      *
      * @param i the number of the message in messages list in application
      * memory.
-     * @throws IOException
-     * @throws ErrResponseException
+     * @throws IOException if there was read/write error in communication with
+     * the server.
+     * @throws ErrResponseException if the server response indicates an error.
      */
     public void deleteMessage(int i) throws IOException, ErrResponseException {
-        SystemOperations.connect(host);
+        SystemOperations.connect(host, null);
         SystemOperations.login(username, password);
         SystemOperations.deleteMessage(messageNumber);
         SystemOperations.logout();
@@ -141,7 +145,8 @@ public class Controller {
     /**
      * Handles the application exit process.
      *
-     * @throws IOException
+     * @throws IOException if there was read/write error in communication with
+     * the server.
      */
     public void exit() throws IOException {
         SystemOperations.disconnect();
@@ -167,7 +172,8 @@ public class Controller {
     }
 
     /**
-     *
+     * Loads the host.properties file at runtime. The file must be located on
+     * the same directory level as the project/jar location.
      *
      * @throws IOException when the input stream cannot read from the file.
      */

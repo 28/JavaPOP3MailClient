@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
  * This window displays the mailbox of the user.
  *
  * @author Dejan Josifovic
- * @version 1.0
  */
 public class MainWindow extends javax.swing.JFrame {
 

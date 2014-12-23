@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
  * Window for sign in process.
  *
  * @author Dejan Josifovic
- * @version 1.0
  */
 public class WelcomeWindow extends javax.swing.JFrame {
 

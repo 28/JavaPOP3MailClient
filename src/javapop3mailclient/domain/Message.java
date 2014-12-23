@@ -10,7 +10,6 @@ import java.util.Objects;
  * This is the representation of the e-mail message.
  *
  * @author Dejan Josifovic
- * @version 1.0
  */
 public class Message implements Serializable {
 

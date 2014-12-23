@@ -5,7 +5,6 @@ package javapop3mailclient.systemoperations;
  * or email doesn't match the regex pattern.
  *
  * @author Dejan Josifovic
- * @version 1.0
  */
 public class CredentialsFormException extends Exception {
 

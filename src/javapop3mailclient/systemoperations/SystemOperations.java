@@ -16,14 +16,16 @@ import java.util.Map;
 
 /**
  * This class represents the system operations that are called by the
- * controller. Each method is a realization of some POP3 function.
+ * controller. Each method is a realization of some POP3 functionality.
  *
  * @author Dejan Josifovic
- * @version 1.0
  */
 public class SystemOperations {
 
-    private static final int POP3_PORT_NUMBER = 110;
+    /**
+     * Default POP3 port number.
+     */
+    private static final Integer POP3_PORT_NUMBER = 110;
 
     /**
      * Socket by which the connection is established.
@@ -46,12 +48,13 @@ public class SystemOperations {
      * port) and initializes the reader and writer.
      *
      * @param host address of the POP3 server.
+     * @param port port number on which to establish the connection.
      * @throws IOException if reader and writer cannot be created.
      * @throws ErrResponseException when response is an error.
      */
-    public static void connect(String host) throws IOException, ErrResponseException {
+    public static void connect(String host, Integer port) throws IOException, ErrResponseException {
         socket = new Socket();
-        socket.connect(new InetSocketAddress(host, POP3_PORT_NUMBER));
+        socket.connect(new InetSocketAddress(host, port == null ? POP3_PORT_NUMBER : port));
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         readResponseLine();
@@ -66,7 +69,7 @@ public class SystemOperations {
      *
      * @param username of the user.
      * @param password of the user.
-     * @throws IOException if the commands cannot be sent via stream
+     * @throws IOException if the commands cannot be sent via stream.
      * @throws ErrResponseException when response is an error.
      */
     public static void login(String username, String password) throws IOException, ErrResponseException {
@@ -225,7 +228,7 @@ public class SystemOperations {
             List<String> headerValues = headers.get(headerName);
             if (response.startsWith("\t") || colonPosition == -1) {
                 if(headerName == null) continue;
-                String values = getHeaderValuesAsString(headerValues);
+                String values = getValuesAsString(headerValues);
                 headerValues.clear();
                 headerValues.addAll(Arrays.asList(values.concat(response).split(",")));
                 continue;
@@ -269,7 +272,13 @@ public class SystemOperations {
         return response;
     }
     
-    private static String getHeaderValuesAsString(List<String> values) {
+    /**
+     * Returns all the values from the passed list as CSV string.
+     * 
+     * @param values values to parse.
+     * @return CSV string representation of the passed list.
+     */
+    private static String getValuesAsString(List<String> values) {
         StringBuilder builder = new StringBuilder();
         for(String value : values) {
             builder.append(value);

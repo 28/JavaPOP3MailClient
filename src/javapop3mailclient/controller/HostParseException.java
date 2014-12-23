@@ -5,7 +5,6 @@ package javapop3mailclient.controller;
  * specified domain name.
  *
  * @author Dejan Josifovic
- * @version 1.0
  */
 public class HostParseException extends Exception {
 

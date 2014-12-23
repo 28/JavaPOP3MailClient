@@ -8,7 +8,6 @@ import javax.swing.table.AbstractTableModel;
  * Table model for the messages table.
  *
  * @author Dejan Josifovic
- * @version 1.0
  */
 public class MessagesTableModel extends AbstractTableModel {
 

@@ -5,7 +5,6 @@ package javapop3mailclient.systemoperations;
  * with -ERR.
  *
  * @author Dejan Josifovic
- * @version 1.0
  */
 public class ErrResponseException extends Exception {
 
