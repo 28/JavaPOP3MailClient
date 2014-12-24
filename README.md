@@ -34,6 +34,11 @@ Download the release, extract, add some hosts to hosts.properties file and run
 the standalone jar. The properties file must be in the same directory and on
 the same level as the jar.
 
+## Near future work
+
+Proper testing mechanism must be implemented. When this is done, 1.1 release
+will be made.
+
 ## License
 
 Distributed under GNU GENERAL PUBLIC LICENSE Version 2
