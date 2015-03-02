@@ -234,7 +234,6 @@ public class MainWindow extends javax.swing.JFrame {
         if (messagesTable.getSelectedRowCount() == 1) {
             try {
                 int row = messagesTable.getSelectedRow();
-                Controller.getInstance().deleteMessage(row);
                 ((MessagesTableModel) messagesTable.getModel()).deleteMessage(row);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "JavaPOP3MailClient - Error", JOptionPane.ERROR_MESSAGE);

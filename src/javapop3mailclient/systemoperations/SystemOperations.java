@@ -125,6 +125,8 @@ public class SystemOperations {
      * That means in some situations this command will fail because the message
      * has already been deleted. This command should work with <code>LIST</code>
      * command to avoid this scenario.
+     * 
+     * This operation does not have a GUI representation.
      *
      * @param messageNumber application memory number of the message that needs
      * to be deleted.
