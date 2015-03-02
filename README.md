@@ -30,6 +30,8 @@ not to download that release.
 
 ## Usage
 
+Currently JavaPOP3MailClient is **completely untested.**
+
 Download the release, extract, add some hosts to hosts.properties file and run
 the standalone jar. The properties file must be in the same directory and on
 the same level as the jar.
