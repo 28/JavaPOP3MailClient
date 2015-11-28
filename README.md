@@ -1,6 +1,6 @@
 # JavaPOP3MailClient
   
-Version: 1.1
+Version: 1.0
 
 JavaPOP3MailClient is a simple Java desktop application that illustrates how 
 POP3 protocol works. It has an implementation of basic POP3 functions in well 
@@ -36,7 +36,7 @@ the same level as the jar.
 ## Should be done...
 
 Proper testing mechanism must be implemented. When this is done, 1.1 release
-will be made.
+should be made.
 
 ## License
 
