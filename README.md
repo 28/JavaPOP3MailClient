@@ -25,9 +25,6 @@ only with SSL which has very different configuration even though it uses POP3.
 That means JavaPOP3MailClient will work for some providers and for other it wont
 (the second group being the larger one).
 
-This (1.1) release completely obsoletes the previous version so it is advised
-not to download that release.
-
 ## Usage
 
 Currently JavaPOP3MailClient is not thoroughly tested. Some bugs might occur.
