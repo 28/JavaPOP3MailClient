@@ -50,7 +50,7 @@ With servers set, just run the program.
 ## Should be done for release 1.1
 
 Proper testing mechanism must be implemented.
-Probably <a href="http://www.icegreen.com/greenmail/">GreenMail/a> is the
+Probably <a href="http://www.icegreen.com/greenmail/">GreenMail</a> is the
 way to go.
 
 ## License
