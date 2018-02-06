@@ -2,3 +2,6 @@
 /dist/
 /nbproject/
 build.xml
+*.jar
+*.class
+out/
